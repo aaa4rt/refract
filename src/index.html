@@ -859,16 +859,22 @@ function parseLRC(txt){
   }
   return out.sort((a,b) => a.ms - b.ms);
 }
+// In the desktop app, the built-in server fetches lyrics for us (the web view can't reach lrclib.net directly).
+// In a normal browser there's no built-in server, so ask lrclib.net directly.
+async function lrclib(path){
+  try{ const r = await fetch('/lrclib' + path); if(r.headers.get('X-Refract-Proxy')) return r; }catch{}
+  return fetch('https://lrclib.net' + path);
+}
 async function fetchLyrics(item){
   if(LY.cache.has(item.uri)) return LY.cache.get(item.uri);
   const q = { track_name:item.name, artist_name:item.artists?.[0]?.name || '', album_name:item.album?.name || '',
     duration: Math.round(item.duration_ms/1000) };
   let r = null;
   try{
-    const res = await fetch('https://lrclib.net/api/get?' + new URLSearchParams(q));
+    const res = await lrclib('/api/get?' + new URLSearchParams(q));
     if(res.ok) r = await res.json();
     if(!r){   // fuzzy fallback: search by name + artist, pick the closest length
-      const sr = await fetch('https://lrclib.net/api/search?' + new URLSearchParams({ track_name:q.track_name, artist_name:q.artist_name }));
+      const sr = await lrclib('/api/search?' + new URLSearchParams({ track_name:q.track_name, artist_name:q.artist_name }));
       const arr = sr.ok ? await sr.json() : [];
       r = arr.filter(x => x.syncedLyrics || x.plainLyrics)
              .sort((a,b) => Math.abs(a.duration-q.duration) - Math.abs(b.duration-q.duration))[0] || null;
