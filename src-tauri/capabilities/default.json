@@ -1,0 +1,14 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Lets the player page move, minimize, maximize and close its own window",
+  "windows": ["main"],
+  "remote": { "urls": ["http://127.0.0.1:43821/*", "http://127.0.0.1:43821"] },
+  "permissions": [
+    "core:window:allow-close",
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-start-dragging",
+    "core:window:default"
+  ]
+}
