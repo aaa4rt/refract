@@ -1,6 +1,6 @@
 [package]
 name = "refract"
-version = "0.4.1"
+version = "0.5.0"
 description = "A lightweight Spotify remote with a liquid glass look"
 edition = "2021"
 
@@ -9,8 +9,6 @@ tauri-build = { version = "2", features = [] }
 
 [dependencies]
 tauri = { version = "2", features = [] }
-# Small HTTP client, used only to fetch lyrics from lrclib.net
-ureq = "2"
 
 # Keep the download small
 [profile.release]
