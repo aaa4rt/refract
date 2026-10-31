@@ -1,6 +1,6 @@
 [package]
 name = "refract"
-version = "0.2.0"
+version = "0.3.0"
 description = "A lightweight Spotify remote with a liquid glass look"
 edition = "2021"
 
